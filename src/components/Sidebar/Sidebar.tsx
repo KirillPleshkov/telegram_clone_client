@@ -1,11 +1,18 @@
 "use client";
 
-import { ChangeEventHandler, PropsWithChildren, useState } from "react";
-import Menu from "../../public/menu.svg";
+import {
+    ChangeEventHandler,
+    FocusEventHandler,
+    MouseEventHandler,
+    PropsWithChildren,
+    useState,
+} from "react";
+import MenuImg from "@/../public/Menu.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import path from "path";
+import Exit from "@/../public/Exit.svg";
+import { Menu } from "./Menu";
 
 const channels = [
     {
@@ -34,10 +41,10 @@ const channels = [
 
 const Sidebar = ({ children }: PropsWithChildren<unknown>) => {
     const [search, setSearch] = useState<string>("");
+    const [isSearchFocus, setIsSearchFocus] = useState<boolean>(false);
+    const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
 
     const pathname = usePathname();
-
-    console.log(pathname);
 
     const searchInputChangeHandler: ChangeEventHandler<HTMLInputElement> = (
         e,
@@ -46,24 +53,72 @@ const Sidebar = ({ children }: PropsWithChildren<unknown>) => {
         setSearch(e.target.value);
     };
 
+    const searchInputBlurHandler: FocusEventHandler<HTMLInputElement> = () => {
+        setTimeout(() => setIsSearchFocus(false), 100);
+    };
+
+    const searchInputFocusHandler: FocusEventHandler<HTMLInputElement> = () => {
+        setIsSearchFocus(true);
+    };
+
+    const searchInputCloseHandler: MouseEventHandler<HTMLButtonElement> = (
+        e,
+    ) => {
+        e.preventDefault();
+        setSearch("");
+    };
+
     return (
         <div className="flex">
-            <div className="w-1/4 min-w-80 bg-white h-screen border-r-2 border-solid border-black-900 fixed">
+            <div
+                className={`w-screen flex-1 bg-white h-screen border-r-2 border-solid border-black-900 fixed sm:w-96 
+                    ${pathname === "/" ? "block" : "hidden"} 
+                    ${pathname === "/signIn" ? "sm:hidden" : "sm:block"}`}
+            >
                 <div className="w-full h-16 p-3 flex gap-3 items-center">
-                    <button>
-                        <Image src={Menu} alt="Меню" width={40} height={40} />
+                    <button onClick={() => setIsOpenMenu(true)}>
+                        <Image
+                            src={MenuImg}
+                            alt="Меню"
+                            width={36}
+                            height={36}
+                        />
                     </button>
-                    <form className="flex-1 pr-2">
+                    <form className="flex-1 pr-2 relative">
                         <input
                             value={search}
                             onChange={searchInputChangeHandler}
+                            onBlur={searchInputBlurHandler}
+                            onFocus={searchInputFocusHandler}
                             type="text"
                             className="w-full bg-gray-200/90 rounded-2xl py-2 px-3 text-sm outline-none focus:border-solid
                                      focus:border-gray-400/50 focus:border-2 focus:bg-white transition-colors duration-300 ease-in-out"
                         />
+                        {isSearchFocus && (
+                            <button
+                                onClick={searchInputCloseHandler}
+                                className="absolute right-4 top-2 text-center p-1"
+                            >
+                                <Image
+                                    src={Exit}
+                                    alt="Меню"
+                                    width={14}
+                                    height={14}
+                                />
+                            </button>
+                        )}
                     </form>
                 </div>
                 <div>
+                    {channels.filter((channel) =>
+                        channel.name
+                            .toLowerCase()
+                            .includes(search.toLowerCase()),
+                    ).length === 0 && (
+                        <h4 className="w-full text-center p-5">
+                            Каналы не найдены
+                        </h4>
+                    )}
                     {channels
                         .filter((channel) =>
                             channel.name
@@ -117,7 +172,12 @@ const Sidebar = ({ children }: PropsWithChildren<unknown>) => {
                         ))}
                 </div>
             </div>
-            <div className="w-1/4 min-w-80 h-screen"></div>
+            <div
+                className={`w-screen h-screen flex-1 sm:w-96 
+                    ${pathname === "/" ? "block" : "hidden"} 
+                    ${pathname === "/signIn" ? "sm:hidden" : "sm:block"}`}
+            ></div>
+            <Menu isOpen={isOpenMenu} close={() => setIsOpenMenu(false)} />
 
             {children}
         </div>

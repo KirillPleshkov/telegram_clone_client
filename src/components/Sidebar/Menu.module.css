@@ -1,0 +1,57 @@
+.menuContainerVisible {
+    opacity: 1;
+    animation: moveFromLeft 100ms linear;
+}
+
+.menuContainerInvisible {
+    opacity: 0;
+    animation: moveFromLeft2 100ms linear;
+}
+
+@keyframes moveFromLeft {
+    0% {
+        transform: translateX(-280px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes moveFromLeft2 {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-280px);
+    }
+}
+
+.menuBackgroundVisible {
+    display: flex;
+    animation: changeColor 200ms linear;
+}
+
+.menuBackgroundInvisible {
+    display: none;
+    animation: changeColor2 200ms linear;
+}
+
+@keyframes changeColor {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes changeColor2 {
+    0% {
+        display: flex;
+        opacity: 1;
+    }
+    100% {
+        display: none;
+        opacity: 0;
+    }
+}
