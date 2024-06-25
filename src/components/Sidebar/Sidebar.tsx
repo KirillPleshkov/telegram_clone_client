@@ -10,9 +10,11 @@ import {
 import MenuImg from "@/../public/Menu.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Exit from "@/../public/Exit.svg";
 import { Menu } from "./Menu";
+import { Profile } from "../modals/Profile";
+import QRSignIn from "../modals/QRSignIn";
 
 const channels = [
     {
@@ -45,6 +47,7 @@ const Sidebar = ({ children }: PropsWithChildren<unknown>) => {
     const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
 
     const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     const searchInputChangeHandler: ChangeEventHandler<HTMLInputElement> = (
         e,
@@ -71,8 +74,8 @@ const Sidebar = ({ children }: PropsWithChildren<unknown>) => {
     return (
         <div className="flex">
             <div
-                className={`w-screen flex-1 bg-white h-screen border-r-2 border-solid border-black-900 fixed sm:w-96 
-                    ${pathname === "/" ? "block" : "hidden"} 
+                className={`w-screen flex-1 bg-white h-screen border-r-2 border-solid border-black-900 fixed sm:w-96
+                    ${pathname === "/" ? "block" : "hidden"}
                     ${pathname === "/signIn" ? "sm:hidden" : "sm:block"}`}
             >
                 <div className="w-full h-16 p-3 flex gap-3 items-center">
@@ -101,7 +104,7 @@ const Sidebar = ({ children }: PropsWithChildren<unknown>) => {
                             >
                                 <Image
                                     src={Exit}
-                                    alt="Меню"
+                                    alt="Очистить"
                                     width={14}
                                     height={14}
                                 />
@@ -128,7 +131,7 @@ const Sidebar = ({ children }: PropsWithChildren<unknown>) => {
                         .map((channel) => (
                             <Link key={channel.id} href={`/${channel.id}`}>
                                 <div
-                                    className={`w-full h-20 hover:bg-gray-900/5 transition-colors duration-200 ease-in-out cursor-pointer flex p-3 flex-nowrap 
+                                    className={`w-full h-20 hover:bg-gray-900/5 transition-colors duration-200 ease-in-out cursor-pointer flex p-3 flex-nowrap
                                         ${
                                             "/" + channel.id == pathname &&
                                             "bg-sky-600/80 hover:bg-sky-600/80"
@@ -173,11 +176,14 @@ const Sidebar = ({ children }: PropsWithChildren<unknown>) => {
                 </div>
             </div>
             <div
-                className={`w-screen h-screen flex-1 sm:w-96 
-                    ${pathname === "/" ? "block" : "hidden"} 
+                className={`w-screen h-screen flex-1 sm:w-96
+                    ${pathname === "/" ? "block" : "hidden"}
                     ${pathname === "/signIn" ? "sm:hidden" : "sm:block"}`}
             ></div>
             <Menu isOpen={isOpenMenu} close={() => setIsOpenMenu(false)} />
+
+            <Profile isOpen={searchParams.has("profile")} />
+            <QRSignIn isOpen={searchParams.has("qr-signin")} />
 
             {children}
         </div>

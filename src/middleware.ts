@@ -1,4 +1,3 @@
-// middleware.ts
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
@@ -16,6 +15,11 @@ export default auth(async (req) => {
             url.origin,
         );
         return NextResponse.redirect(loginUrl);
+    }
+
+    if (url.pathname === "/signIn" && req.auth) {
+        const callbackUrl = url.searchParams.get("callbackUrl") || "/";
+        return NextResponse.redirect(callbackUrl);
     }
 
     return NextResponse.next();

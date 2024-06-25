@@ -5,9 +5,12 @@ import { useState } from "react";
 import Image from "next/image";
 import Backward from "@/../public/Backward.svg";
 import VerticalDots from "@/../public/VerticalDots.svg";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
-    const [isOpenDialog, setIsOpenDialog] = useState<boolean>(true);
+    const session = useSession();
+
+    console.log(session);
 
     return (
         <div className="bg-main  h-screen w-screen sm:w-[calc(100vw-24rem)]">
