@@ -46,6 +46,7 @@ const QRScanner = ({
         return () => {
             () => QRScannerStop();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen]);
 
     return <div id="qrCodeContainer" />;

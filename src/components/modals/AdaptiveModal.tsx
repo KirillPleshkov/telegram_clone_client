@@ -1,24 +1,12 @@
+"use client";
+
 import Link from "next/link";
-import {
-    ReadonlyURLSearchParams,
-    usePathname,
-    useRouter,
-    useSearchParams,
-} from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PropsWithChildren } from "react";
 import Image from "next/image";
 import Exit from "@/../public/Exit.svg";
 import Backward from "@/../public/Backward.svg";
-
-export const deleteQueryString = (
-    name: string,
-    searchParams: ReadonlyURLSearchParams,
-) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete(name);
-
-    return params.toString();
-};
+import { deleteQueryString } from "@/utils/queryString";
 
 export function AdaptiveModal({
     children,

@@ -1,17 +1,9 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
 import Image from "next/image";
 import Backward from "@/../public/Backward.svg";
 import VerticalDots from "@/../public/VerticalDots.svg";
-import { useSession } from "next-auth/react";
 
 export default function Home() {
-    const session = useSession();
-
-    console.log(session);
-
     return (
         <div className="bg-main  h-screen w-screen sm:w-[calc(100vw-24rem)]">
             <div className="px-4 py-2 min-h-16 flex content-center bg-white justify-between border-solid border-b border-gray-300/50">

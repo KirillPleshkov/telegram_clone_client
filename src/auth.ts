@@ -95,21 +95,42 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                     type: "username",
                 },
                 password: { label: "Password", type: "password" },
+                refresh: { label: "refresh", type: "text" },
             },
             async authorize(credentials) {
-                return await axios
-                    .post<User>(
-                        process.env.NEXTAUTH_BACKEND_URL +
-                            "authentication/login/",
-                        credentials,
-                    )
-                    .then(({ data }) => {
-                        return data;
-                    })
-                    .catch((e) => {
-                        console.error(e);
-                        return null;
-                    });
+                if (credentials.username && credentials.password) {
+                    return await axios
+                        .post(
+                            process.env.NEXTAUTH_BACKEND_URL +
+                                "authentication/login/",
+                            credentials,
+                        )
+                        .then(({ data }) => {
+                            return data;
+                        })
+                        .catch((e) => {
+                            console.error(e);
+                            return null;
+                        });
+                }
+                if (credentials.refresh) {
+                    return await axios
+                        .post(
+                            process.env.NEXTAUTH_BACKEND_URL +
+                                "authentication/token/refresh/",
+                            { refresh: credentials.refresh },
+                        )
+                        .then(({ data }) => {
+                            return {
+                                ...data,
+                                refresh: credentials.refresh,
+                            };
+                        })
+                        .catch((e) => {
+                            console.error(e);
+                            return null;
+                        });
+                }
             },
         }),
         GitHubProvider({

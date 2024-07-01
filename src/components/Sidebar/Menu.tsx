@@ -1,5 +1,6 @@
 "use client";
 
+import { addQueryString } from "@/utils/queryString";
 import styles from "./Menu.module.css";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -13,16 +14,6 @@ import {
 type MenuProps = {
     isOpen: boolean;
     close: () => void;
-};
-
-export const addQueryString = (
-    name: string,
-    searchParams: ReadonlyURLSearchParams,
-) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.append(name, "true");
-
-    return params.toString();
 };
 
 export const Menu = ({ isOpen, close }: MenuProps) => {

@@ -1,11 +1,12 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormEventHandler, useState } from "react";
 
 export function Credentials() {
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const [isError, setIsError] = useState<boolean>(false);
 
@@ -19,7 +20,7 @@ export function Credentials() {
         });
 
         if (result && !result.error) {
-            router.push("/");
+            router.push(searchParams.get("callbackUrl") || "/");
         } else {
             setIsError(true);
         }
