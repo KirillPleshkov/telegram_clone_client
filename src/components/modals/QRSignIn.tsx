@@ -5,9 +5,11 @@ import QRScanner from "../QRScanner/QRScanner";
 import { AdaptiveModal } from "./AdaptiveModal";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function QRSignIn({ isOpen }: { isOpen: boolean }) {
     const [scannedText, setScannedText] = useState<string | null>(null);
+    const router = useRouter();
 
     const handlerScan = (result: string) => {
         setScannedText(result);
@@ -33,9 +35,10 @@ export default function QRSignIn({ isOpen }: { isOpen: boolean }) {
             )
             .then(({ data }) => {
                 if (data.success) {
+                    router.back();
                 }
             });
-    }, [scannedText, session?.access_token]);
+    }, [router, scannedText, session?.access_token]);
 
     return (
         <AdaptiveModal

@@ -10,9 +10,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { deleteQueryString } from "@/utils/queryString";
 import Backward from "@/../public/Backward.svg";
+import Loading from "../UI/Loading";
 
 export default function QRLogin() {
     const [qrValue, setQrValue] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -23,11 +25,12 @@ export default function QRLogin() {
                 setQrValue(req.qr_data);
             }
             if (req.refresh) {
+                setIsLoading(true);
                 const result = await signIn("credentials", {
                     refresh: req.refresh,
                     redirect: false,
                 });
-
+                setIsLoading(false);
                 if (result && !result.error) {
                     router.push(searchParams.get("callbackUrl") || "/");
                 }
@@ -78,6 +81,7 @@ export default function QRLogin() {
                     className="p-1"
                 />
             </div>
+            {isLoading && <Loading />}
         </div>
     );
 }

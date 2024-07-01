@@ -3,22 +3,26 @@
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEventHandler, useState } from "react";
+import Loading from "../UI/Loading";
 
 export function Credentials() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
     const [isError, setIsError] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
+
         const formData = new FormData(e.currentTarget);
         const result = await signIn("credentials", {
             username: formData.get("username"),
             password: formData.get("password"),
             redirect: false,
         });
-
+        setIsLoading(false);
         if (result && !result.error) {
             router.push(searchParams.get("callbackUrl") || "/");
         } else {
@@ -77,6 +81,7 @@ export function Credentials() {
                     {isError && "Неверный логин или пароль"}
                 </h2>
             </form>
+            {isLoading && <Loading />}
         </div>
     );
 }

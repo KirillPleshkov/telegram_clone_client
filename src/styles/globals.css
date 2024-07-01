@@ -12,6 +12,14 @@
     }
 }
 
+html,
+body,
+body > div:first-child,
+div#__next,
+div#__next > div {
+    height: 100%;
+}
+
 @layer components {
     .inputAutofill {
         &:-webkit-autofill {
@@ -59,5 +67,18 @@
     100% {
         display: none;
         opacity: 0;
+    }
+}
+
+.loader-anim {
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }
