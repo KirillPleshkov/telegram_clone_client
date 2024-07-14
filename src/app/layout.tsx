@@ -1,8 +1,7 @@
 import { Inter } from "next/font/google";
-import "../styles/globals.css";
-import Sidebar from "@/components/Sidebar/Sidebar";
+import "@/styles/globals.css";
 import { Providers } from "@/components/Providers";
-import { Suspense } from "react";
+import Sidebar from "@/components/Sidebar/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,11 +14,7 @@ export default function RootLayout({
         <html lang="ru">
             <body className={inter.className}>
                 <main>
-                    <Providers>
-                        <Suspense>
-                            <Sidebar>{children}</Sidebar>
-                        </Suspense>
-                    </Providers>
+                    <Providers>{children}</Providers>
                 </main>
             </body>
         </html>

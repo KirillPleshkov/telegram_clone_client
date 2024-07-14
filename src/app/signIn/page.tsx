@@ -12,7 +12,7 @@ export default function SignIn({
     searchParams: { callbackUrl?: string; qrLogin?: string };
 }) {
     return (
-        <div className="w-screen h-screen flex justify-center items-center bg-white sm:bg-transparent calc(var(--vh, 1vh) * 50)">
+        <div className="w-screen h-dvh flex justify-center items-center bg-white sm:bg-transparent calc(var(--vh, 1vh) * 50)">
             <div className="rounded-md bg-white h-min w-full p-5 sm:w-min md:gap-10 sm:flex">
                 <div className="flex justify-end">
                     <Link
